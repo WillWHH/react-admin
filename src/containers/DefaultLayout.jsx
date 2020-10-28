@@ -11,7 +11,7 @@ import '@/style/layout.scss'
 
 import AppHeader from './AppHeader.jsx'
 import AppAside from './AppAside.jsx'
-import AppFooter from './AppFooter.jsx'
+import HeadTitle from './HeadTitle.jsx'
 
 const { Content } = Layout
 
@@ -56,13 +56,9 @@ class DefaultLayout extends Component {
         let { pathname } = this.props.location
 
         // 菜单收缩展开时 echarts 图表的自适应
-        if (pathname === '/' || pathname === '/index') {
+        if (pathname === '/' || pathname === '/awareness') {
             this.timer = setTimeout(() => {
                 echarts.init(document.getElementById('bar')).resize()
-                echarts.init(document.getElementById('line')).resize()
-                echarts.init(document.getElementById('pie')).resize()
-                echarts.init(document.getElementById('pictorialBar')).resize()
-                echarts.init(document.getElementById('scatter')).resize()
             }, 500)
         } else {
             this.timer = null
@@ -77,42 +73,45 @@ class DefaultLayout extends Component {
         let { menuClick, menuToggle } = this.props
         let { auth } = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : ''
         return (
-            <Layout className='app'>
-                <BackTop />
-                <AppAside menuToggle={menuToggle} menu={this.state.menu} />
-                <Layout style={{ marginLeft: menuToggle ? '80px' : '200px', minHeight: '100vh' }}>
-                    <AppHeader
-                        menuToggle={menuToggle}
-                        menuClick={menuClick}
-                        avatar={this.state.avatar}
-                        show={this.state.show}
-                        loginOut={this.loginOut}
-                    />
-                    <Content className='content'>
-                        <Switch>
-                            {routes.map(item => {
-                                return (
-                                    <Route
-                                        key={item.path}
-                                        path={item.path}
-                                        exact={item.exact}
-                                        render={props =>
-                                            !auth ? (
-                                                <item.component {...props} />
-                                            ) : item.auth && item.auth.indexOf(auth) !== -1 ? (
-                                                <item.component {...props} />
-                                            ) : (
-                                                // 这里也可以跳转到 403 页面
-                                                <Redirect to='/404' {...props} />
-                                            )
-                                        }></Route>
-                                )
-                            })}
-                            <Redirect to='/404' />
-                        </Switch>
-                    </Content>
-                    <AppFooter />
-                </Layout>
+            <Layout>
+                <HeadTitle />
+                <Content>
+                    <Layout className='app'>
+                        <BackTop />
+                        <AppAside menuToggle={menuToggle} menu={this.state.menu} />
+                        <Layout style={{ marginLeft: menuToggle ? '80px' : '300px', minHeight: '100vh' }}>
+                            <AppHeader
+                                menuToggle={menuToggle}
+                                menuClick={menuClick}
+                                avatar={this.state.avatar}
+                                show={this.state.show}
+                                loginOut={this.loginOut}
+                            />
+                            <Content className='content'>
+                                <Switch>
+                                    {routes.map(item => {
+                                        return (
+                                            <Route
+                                                key={item.path}
+                                                path={item.path}
+                                                exact={item.exact}
+                                                render={props =>
+                                                    !auth ? (
+                                                        <item.component {...props} />
+                                                    ) : item.auth && item.auth.indexOf(auth) !== -1 ? (
+                                                        <item.component {...props} />
+                                                    ) : (
+                                                        // 这里也可以跳转到 403 页面
+                                                        <Redirect to='/404' {...props} />
+                                                    )
+                                                }></Route>
+                                        )
+                                    })}
+                                </Switch>
+                            </Content>
+                        </Layout>
+                    </Layout>
+                </Content>
             </Layout>
         )
     }
@@ -128,9 +127,4 @@ const dispatchToProp = dispatch => ({
     }
 })
 
-export default withRouter(
-    connect(
-        stateToProp,
-        dispatchToProp
-    )(DefaultLayout)
-)
+export default withRouter(connect(stateToProp, dispatchToProp)(DefaultLayout))

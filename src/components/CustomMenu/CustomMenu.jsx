@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Icon } from 'antd'
 import { Link, withRouter } from 'react-router-dom'
+import '@/style/menu.scss'
 
 class CustomMenu extends Component {
     state = {
@@ -68,8 +69,8 @@ class CustomMenu extends Component {
     renderMenuItem = ({ key, icon, title }) => (
         <Menu.Item key={key}>
             <Link to={key}>
-                {icon && <Icon type={icon} />}
-                <span>{title}</span>
+                {icon && <Icon style={{ fontSize: '20px' }} type={icon} />}
+                <span className='menuItem'>{title}</span>
             </Link>
         </Menu.Item>
     )
@@ -81,8 +82,8 @@ class CustomMenu extends Component {
                 key={key}
                 title={
                     <span>
-                        {icon && <Icon type={icon} />}
-                        <span>{title}</span>
+                        {icon && <Icon style={{ fontSize: '20px' }} type={icon} />}
+                        <span className='menuItem'>{title}</span>
                     </span>
                 }>
                 {subs &&

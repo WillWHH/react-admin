@@ -1,54 +1,75 @@
 import loadable from '@/utils/loadable'
 
-const Index = loadable(() => import(/* webpackChunkName: 'index' */ '@/views/Index'))
+const Index = loadable(() => import('@/views/Index'))
 
-// 通用
-const ButtonView = loadable(() => import(/* webpackChunkName: 'button' */ '@/views/PublicView/Button'))
-const IconView = loadable(() => import(/* webpackChunkName: 'icon' */ '@/views/PublicView/Icon'))
+// 一、业务感知
+const Awareness = loadable(() => import('@/views/Awareness'))
 
-// 导航
-const DropdownView = loadable(() => import(/* webpackChunkName: 'dropdown' */ '@/views/NavView/Dropdown'))
-const MenuView = loadable(() => import(/* webpackChunkName: 'menu' */ '@/views/NavView/Menu'))
-const StepView = loadable(() => import(/* webpackChunkName: 'step' */ '@/views/NavView/Step'))
+// 二、虚拟化资源池
+//const Physical = loadable(() => import('@/views/Resources/Physical'))
+const VHF_dev = loadable(() => import('@/views/Resources/Physical/VHF_dev'))
+const HF_dev = loadable(() => import('@/views/Resources/Physical/HF_dev'))
+const LTE_dev = loadable(() => import('@/views/Resources/Physical/LTE_dev'))
+const switch_dev = loadable(() => import('@/views/Resources/Physical/switch_dev'))
+const control_dev = loadable(() => import('@/views/Resources/Physical/control_dev'))
+const terminal_dev = loadable(() => import('@/views/Resources/Physical/terminal_dev'))
+const network_top = loadable(() => import('@/views/Resources/Physical/network_top'))
 
-// 表单
-const FormBaseView = loadable(() => import(/* webpackChunkName: 'formBase' */ '@/views/FormView/FormBaseView'))
-const FormStepView = loadable(() => import(/* webpackChunkName: 'formStep' */ '@/views/FormView/FormStepView'))
+//const Logical = loadable(() => import('@/views/Resources/Logical'))
+const ip_res = loadable(() => import('@/views/Resources/Logical/ip_res'))
+const uid_res = loadable(() => import('@/views/Resources/Logical/uid_res'))
 
-// 展示
-const TableView = loadable(() => import(/* webpackChunkName: 'table' */ '@/views/ShowView/Table'))
-const CollapseView = loadable(() => import(/* webpackChunkName: 'collapse' */ '@/views/ShowView/Collapse'))
-const TreeView = loadable(() => import(/* webpackChunkName: 'tree' */ '@/views/ShowView/Tree'))
-const TabsView = loadable(() => import(/* webpackChunkName: 'tabs' */ '@/views/ShowView/Tabs'))
+//const Frequency = loadable(() => import('@/views/Resources/Frequency'))
+const VHF_fre = loadable(() => import('@/views/Resources/Frequency/VHF_fre'))
+const HF_fre = loadable(() => import('@/views/Resources/Frequency/HF_fre'))
+const LTE_fre = loadable(() => import('@/views/Resources/Frequency/LTE_fre'))
 
-// 其它
-const ProgressView = loadable(() => import(/* webpackChunkName: 'progress' */ '@/views/Others/Progress'))
-const AnimationView = loadable(() => import(/* webpackChunkName: 'animation' */ '@/views/Others/Animation'))
-const EditorView = loadable(() => import(/* webpackChunkName: 'editor' */ '@/views/Others/Editor'))
-const UploadView = loadable(() => import(/* webpackChunkName: 'upload' */ '@/views/Others/Upload'))
+// 三、资源编排
+const Orchestration = loadable(() => import('@/views/Orchestration'))
 
-const Three = loadable(() => import(/* webpackChunkName: 'three' */ '@/views/TestView'))
-const About = loadable(() => import(/* webpackChunkName: 'about' */ '@/views/About'))
+// 四、状态监测
+const Monitor = loadable(() => import('@/views/Monitor'))
+
+// 五、南向接口
+const VHF_net = loadable(() => import('@/views/S_interface/VHF_net'))
+const LTE_net = loadable(() => import('@/views/S_interface/LTE_net'))
+const HF_net = loadable(() => import('@/views/S_interface/HF_net'))
+
+//六、北向接口
+const Control = loadable(() => import('@/views/N_interface/Control'))
 
 const routes = [
     { path: '/index', exact: true, name: 'Index', component: Index, auth: [1] },
-    { path: '/public/button', exact: false, name: '按钮', component: ButtonView, auth: [1] },
-    { path: '/public/icon', exact: false, name: '图标', component: IconView, auth: [1] },
-    { path: '/nav/dropdown', exact: false, name: '下拉菜单', component: DropdownView },
-    { path: '/nav/menu', exact: false, name: '下拉菜单', component: MenuView },
-    { path: '/nav/steps', exact: false, name: '步骤条', component: StepView },
-    { path: '/form/base-form', exact: false, name: '表单', component: FormBaseView },
-    { path: '/form/step-form', exact: false, name: '表单', component: FormStepView },
-    { path: '/show/table', exact: false, name: '表格', component: TableView },
-    { path: '/show/collapse', exact: false, name: '折叠面板', component: CollapseView },
-    { path: '/show/tree', exact: false, name: '树形控件', component: TreeView },
-    { path: '/show/tabs', exact: false, name: '标签页', component: TabsView },
-    { path: '/others/progress', exact: false, name: '进度条', component: ProgressView, auth: [1] },
-    { path: '/others/animation', exact: false, name: '动画', component: AnimationView, auth: [1] },
-    { path: '/others/editor', exact: false, name: '富文本', component: EditorView, auth: [1] },
-    { path: '/others/upload', exact: false, name: '上传', component: UploadView, auth: [1] },
-    { path: '/one/two/three', exact: false, name: '三级', component: Three },
-    { path: '/about', exact: false, name: '关于', component: About, auth: [1] }
+
+    { path: '/awareness', exact: false, name: '业务感知', component: Awareness, auth: [1] },
+
+    //{ path: '/resource/physical', exact: false, name: '物理资源', component: Physical },
+    { path: '/resource/physical/VHF_dev', exact: false, name: '超短波设备', component: VHF_dev },
+    { path: '/resource/physical/HF_dev', exact: false, name: '短波设备', component: HF_dev },
+    { path: '/resource/physical/LTE_dev', exact: false, name: 'LTE设备', component: LTE_dev },
+    { path: '/resource/physical/switch_dev', exact: false, name: '交换机设备', component: switch_dev },
+    { path: '/resource/physical/control_dev', exact: false, name: '控制设备', component: control_dev },
+    { path: '/resource/physical/terminal_dev', exact: false, name: '用户终端设备', component: terminal_dev },
+    { path: '/resource/physical/network_top', exact: false, name: '网络拓扑资源', component: network_top },
+
+    //{ path: '/resource/logical', exact: false, name: '逻辑资源', component: Logical },
+    { path: '/resource/logical/ip_res', exact: false, name: 'IP码号资源', component: ip_res },
+    { path: '/resource/logical/uid_res', exact: false, name: '用户号资源', component: uid_res },
+
+    //{ path: '/resource/frequency', exact: false, name: '频率资源', component: Frequency },
+    { path: '/resource/frequency/VHF_fre', exact: false, name: '超短波频率', component: VHF_fre },
+    { path: '/resource/frequency/HF_fre', exact: false, name: '短波频率', component: HF_fre },
+    { path: '/resource/frequency/LTE_fre', exact: false, name: '4GLTE频率', component: LTE_fre },
+
+    { path: '/orchestration', exact: false, name: '资源编排', component: Orchestration },
+
+    { path: '/monitor', exact: false, name: '状态监测', component: Monitor },
+
+    { path: '/s_interface/VHF_net', exact: false, name: 'VHF网', component: VHF_net, auth: [1] },
+    { path: '/s_interface/LTE_net', exact: false, name: 'LTE网', component: LTE_net, auth: [1] },
+    { path: '/s_interface/HF_net', exact: false, name: 'HF网', component: HF_net, auth: [1] },
+
+    { path: '/n_interface/control', exact: false, name: '上级管控', component: Control, auth: [1] }
 ]
 
 export default routes

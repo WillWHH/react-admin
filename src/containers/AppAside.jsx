@@ -1,18 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout, Icon } from 'antd'
+import { Layout } from 'antd'
 import CustomMenu from '@/components/CustomMenu'
-
+import { BorderOuterOutlined } from '@ant-design/icons'
 const { Sider } = Layout
 
 const AppAside = props => {
     let { menuToggle, menu } = props
     return (
-        <Sider className='aside' collapsed={menuToggle}>
+        <Sider className='aside' width={300} collapsed={menuToggle}>
             <div className='logo'>
-                <a rel='noopener noreferrer' href='https://github.com/ltadpoles' target='_blank'>
-                    <Icon type='github' style={{ fontSize: '3.8rem', color: '#fff' }} />
-                </a>
+                {menuToggle && <BorderOuterOutlined style={{ fontSize: '2.0rem', color: '#08c' }} />}
             </div>
             <CustomMenu menu={menu}></CustomMenu>
         </Sider>
