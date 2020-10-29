@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Layout, BackTop, message } from 'antd'
+import { Layout, BackTop } from 'antd'
 import routes from '@/routes'
 import { menuToggleAction } from '@/store/actionCreators'
 import echarts from 'echarts/lib/echarts'
@@ -21,35 +21,14 @@ class DefaultLayout extends Component {
         show: true,
         menu: []
     }
-
-    isLogin = () => {
-        if (!localStorage.getItem('user')) {
-            this.props.history.push('/login')
-        } else {
-            this.setState({
-                menu: this.getMenu(menu)
-            })
-        }
-    }
-
-    loginOut = () => {
-        localStorage.clear()
-        this.props.history.push('/login')
-        message.success('登出成功!')
-    }
     getMenu = menu => {
-        let newMenu,
-            auth = JSON.parse(localStorage.getItem('user')).auth
-        if (!auth) {
-            return menu
-        } else {
-            newMenu = menu.filter(res => res.auth && res.auth.indexOf(auth) !== -1)
-            return newMenu
-        }
+        return menu
     }
 
     componentDidMount() {
-        this.isLogin()
+        this.setState({
+            menu: this.getMenu(menu)
+        })
     }
 
     componentDidUpdate() {
@@ -71,7 +50,6 @@ class DefaultLayout extends Component {
 
     render() {
         let { menuClick, menuToggle } = this.props
-        let { auth } = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : ''
         return (
             <Layout>
                 <HeadTitle />
@@ -80,13 +58,7 @@ class DefaultLayout extends Component {
                         <BackTop />
                         <AppAside menuToggle={menuToggle} menu={this.state.menu} />
                         <Layout style={{ marginLeft: menuToggle ? '80px' : '300px', minHeight: '100vh' }}>
-                            <AppHeader
-                                menuToggle={menuToggle}
-                                menuClick={menuClick}
-                                avatar={this.state.avatar}
-                                show={this.state.show}
-                                loginOut={this.loginOut}
-                            />
+                            <AppHeader menuToggle={menuToggle} menuClick={menuClick} show={this.state.show} />
                             <Content className='content'>
                                 <Switch>
                                     {routes.map(item => {
@@ -95,16 +67,7 @@ class DefaultLayout extends Component {
                                                 key={item.path}
                                                 path={item.path}
                                                 exact={item.exact}
-                                                render={props =>
-                                                    !auth ? (
-                                                        <item.component {...props} />
-                                                    ) : item.auth && item.auth.indexOf(auth) !== -1 ? (
-                                                        <item.component {...props} />
-                                                    ) : (
-                                                        // 这里也可以跳转到 403 页面
-                                                        <Redirect to='/404' {...props} />
-                                                    )
-                                                }></Route>
+                                                render={props => <item.component {...props} />}></Route>
                                         )
                                     })}
                                 </Switch>

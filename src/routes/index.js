@@ -39,9 +39,9 @@ const HF_net = loadable(() => import('@/views/S_interface/HF_net'))
 const Control = loadable(() => import('@/views/N_interface/Control'))
 
 const routes = [
-    { path: '/index', exact: true, name: 'Index', component: Index, auth: [1] },
+    { path: '/index', exact: true, name: 'Index', component: Index },
 
-    { path: '/awareness', exact: false, name: '业务感知', component: Awareness, auth: [1] },
+    { path: '/awareness', exact: false, name: '业务感知', component: Awareness },
 
     //{ path: '/resource/physical', exact: false, name: '物理资源', component: Physical },
     { path: '/resource/physical/VHF_dev', exact: false, name: '超短波设备', component: VHF_dev },
@@ -65,11 +65,11 @@ const routes = [
 
     { path: '/monitor', exact: false, name: '状态监测', component: Monitor },
 
-    { path: '/s_interface/VHF_net', exact: false, name: 'VHF网', component: VHF_net, auth: [1] },
-    { path: '/s_interface/LTE_net', exact: false, name: 'LTE网', component: LTE_net, auth: [1] },
-    { path: '/s_interface/HF_net', exact: false, name: 'HF网', component: HF_net, auth: [1] },
+    { path: '/s_interface/VHF_net', exact: false, name: 'VHF网', component: VHF_net },
+    { path: '/s_interface/LTE_net', exact: false, name: 'LTE网', component: LTE_net },
+    { path: '/s_interface/HF_net', exact: false, name: 'HF网', component: HF_net },
 
-    { path: '/n_interface/control', exact: false, name: '上级管控', component: Control, auth: [1] }
+    { path: '/n_interface/control', exact: false, name: '上级管控', component: Control }
 ]
 
 export default routes

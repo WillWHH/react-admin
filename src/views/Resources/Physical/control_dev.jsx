@@ -1,82 +1,142 @@
 import React, { Component } from 'react'
-import { Card, Icon, Row, Col, Popover } from 'antd'
+import Highlighter from 'react-highlight-words'
+import { Icon, Table, Input, Button, Tag } from 'antd'
 import { control_device } from './data'
 
 class control_dev extends Component {
     state = {
-        data: []
+        data: [],
+        searchText: '',
+        searchedColumn: ''
     }
     componentDidMount() {
         this.setState({
             data: control_device
         })
     }
-    renderDevItem = ({ id, type, rate, waveform, quality, state }) => (
-        <Col span={6}>
-            <Popover
-                content={
-                    <table>
-                        <tr>
-                            <th>设备ID号:</th>
-                            <th>{id}</th>
-                        </tr>
-                        <tr>
-                            <th>链路类型:</th>
-                            <th>{type}</th>
-                        </tr>
-                        <tr>
-                            <th>传输速率:</th>
-                            <th>{rate}</th>
-                        </tr>
-                        <tr>
-                            <th>传输波形:</th>
-                            <th>{waveform}</th>
-                        </tr>
-                        <tr>
-                            <th>链路质量:</th>
-                            <th>{quality}</th>
-                        </tr>
-                        <tr>
-                            <td>当前状态:</td>
-                            <td>{state ? '故障' : '可用'}</td>
-                        </tr>
-                    </table>
-                }
-                placement='bottom'
-                trigger='hover'>
-                <Card hoverable bordered={false} style={{ backgroundColor: state ? '#ff1919' : '#b2fd7c' }}>
-                    <Col span={10}>
-                        <Icon style={{ fontSize: '50px', color: 'white' }} type={state ? 'alert' : 'desktop'} />
-                    </Col>
-                    <Col span={14} style={{ fontSize: '1.5rem', color: 'white' }}>
-                        <table>
-                            <tr>
-                                <th>设备ID:</th>
-                                <th>{id}</th>
-                            </tr>
-                            <tr>
-                                <td>状态:</td>
-                                <td>{state ? '故障' : '可用'}</td>
-                            </tr>
-                        </table>
-                    </Col>
-                </Card>
-            </Popover>
-        </Col>
-    )
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={node => {
+                        this.searchInput = node
+                    }}
+                    placeholder={`查找 ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Button
+                    type='primary'
+                    onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    icon='search'
+                    size='small'
+                    style={{ width: 90, marginRight: 8 }}>
+                    查找
+                </Button>
+                <Button onClick={() => this.handleReset(clearFilters)} size='small' style={{ width: 90 }}>
+                    重置
+                </Button>
+            </div>
+        ),
+        filterIcon: filtered => <Icon type='search' style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex]
+                .toString()
+                .toLowerCase()
+                .includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select())
+            }
+        },
+        render: text =>
+            this.state.searchedColumn === dataIndex ? (
+                <Highlighter
+                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    searchWords={[this.state.searchText]}
+                    autoEscape
+                    textToHighlight={text.toString()}
+                />
+            ) : (
+                text
+            )
+    })
+
+    handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm()
+        this.setState({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex
+        })
+    }
+
+    handleReset = clearFilters => {
+        clearFilters()
+        this.setState({ searchText: '' })
+    }
 
     render() {
-        return (
-            <Card title={'控制设备'}>
-                <Row gutter={(20, [15, 24])}>
-                    {this.state.data &&
-                        this.state.data.map(item => {
-                            return this.renderDevItem(item)
-                        })}
-                </Row>
-            </Card>
-        )
+        const columns = [
+            {
+                align: 'center',
+                title: '设备ID',
+                dataIndex: 'id',
+                key: 'id',
+                width: '10%',
+                sorter: (a, b) => a.id - b.id,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('id')
+            },
+            {
+                align: 'center',
+                title: '链路类型',
+                dataIndex: 'type',
+                key: 'type',
+                width: '15%',
+                sorter: (a, b) => a.type - b.type,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('type')
+            },
+            {
+                align: 'center',
+                title: '传播速率',
+                dataIndex: 'rate',
+                key: 'rate',
+                width: '15%',
+                sorter: (a, b) => a.rate - b.rate,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('rate')
+            },
+            {
+                align: 'center',
+                title: '传播波形',
+                dataIndex: 'waveform',
+                key: 'waveform',
+                width: '15%',
+                sorter: (a, b) => a.waveform - b.waveform,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('waveform')
+            },
+            {
+                align: 'center',
+                title: '当前状态',
+                dataIndex: 'state',
+                key: 'state',
+                width: '5%',
+                sorter: (a, b) => a.state - b.state,
+                sortDirections: ['descend', 'ascend'],
+                render: state => (
+                    <span>
+                        <Tag color={state ? 'red' : 'green'} key={state}>
+                            {state ? '不连接' : '连接'}
+                        </Tag>
+                    </span>
+                )
+            }
+        ]
+        return <Table columns={columns} dataSource={this.state.data} />
     }
 }
-
 export default control_dev

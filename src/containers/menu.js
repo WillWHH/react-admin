@@ -2,14 +2,12 @@ const menu = [
     {
         key: '/index',
         title: '首页',
-        icon: 'home',
-        auth: [1]
+        icon: 'home'
     },
     {
         title: '一、业务感知',
         key: '/awareness',
-        icon: 'appstore',
-        auth: [1]
+        icon: 'appstore'
     },
     {
         title: '二、虚拟化资源池',
@@ -50,20 +48,17 @@ const menu = [
                     { title: '3.3 4GLTE频率', key: '/resource/frequency/LTE_fre', icon: '' }
                 ]
             }
-        ],
-        auth: [1]
+        ]
     },
     {
         title: '三、资源编排',
         key: '/orchestration',
-        icon: 'form',
-        auth: [1]
+        icon: 'form'
     },
     {
         title: '四、状态监测',
         key: '/monitor',
-        icon: 'pie-chart',
-        auth: [1]
+        icon: 'pie-chart'
     },
     {
         title: '五、南向接口',
@@ -73,15 +68,13 @@ const menu = [
             { title: '1、VHF网', key: '/s_interface/VHF_net', icon: '' },
             { title: '2、HF网', key: '/s_interface/HF_net', icon: '' },
             { title: '3、LTE网', key: '/s_interface/LTE_net', icon: '' }
-        ],
-        auth: [1]
+        ]
     },
     {
         title: '六、北向接口',
         key: '/n_interface',
         icon: 'bars',
-        subs: [{ title: '1、上级管控', key: '/n_interface/control', icon: '' }],
-        auth: [1]
+        subs: [{ title: '1、上级管控', key: '/n_interface/control', icon: '' }]
     }
 ]
 
